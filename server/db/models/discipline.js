@@ -5,6 +5,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Discipline extends Model {
     static associate(models) {
+      Discipline.belongsTo(models.Teacher, {
+        foreignKey: 'teacher_id',
+        as: 'teacher',
+      });
+
       Discipline.hasMany(models.Lesson, {
         foreignKey: 'discipline_id',
         as: 'lessons',
@@ -23,10 +28,23 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING(150),
         allowNull: false,
+        unique: true,
       },
       description: {
         type: DataTypes.TEXT,
         allowNull: true,
+      },
+      teacher_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
       },
     },
     {
@@ -34,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Discipline',
       tableName: 'Disciplines',
       timestamps: false,
-    }
+    },
   );
 
   return Discipline;

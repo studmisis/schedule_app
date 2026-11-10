@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'discipline',
       });
 
+      Lesson.belongsTo(models.Group, {
+        foreignKey: 'group_id',
+        as: 'group',
+      });
+
       Lesson.belongsTo(models.User, {
         foreignKey: 'created_by',
         as: 'creator',
@@ -46,20 +51,24 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      group_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       created_by: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       topic: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+        type: DataTypes.STRING(255),
+        allowNull: true,
       },
       join_url: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+        type: DataTypes.STRING(500),
+        allowNull: true,
       },
       recording_url: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(500),
         allowNull: true,
       },
       createdAt: {
@@ -76,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Lesson',
       tableName: 'Lessons',
       timestamps: false,
-    }
+    },
   );
 
   return Lesson;

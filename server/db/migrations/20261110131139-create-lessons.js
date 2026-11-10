@@ -5,10 +5,10 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Lessons', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
         type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
       },
       date: {
         type: Sequelize.DATEONLY,
@@ -38,7 +38,17 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT',
       },
-      user_id: {
+      group_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Groups',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+      },
+      created_by: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -49,31 +59,31 @@ module.exports = {
         onDelete: 'RESTRICT',
       },
       topic: {
-        type: Sequelize.TEXT,
-        allowNull: false,
+        type: Sequelize.STRING(255),
+        allowNull: true,
       },
       join_url: {
-        type: Sequelize.TEXT,
-        allowNull: false,
+        type: Sequelize.STRING(500),
+        allowNull: true,
       },
       recording_url: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING(500),
         allowNull: true,
       },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('NOW'),
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('NOW'),
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Lessons');
   },
 };
