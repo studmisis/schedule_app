@@ -1,0 +1,12 @@
+:root {
+  /* Основные цвета */
+  --color-primary: #0a7e8b;
+  --color-background: #f7f9fb;
+  --color-surface: #ffffff;
+  --color-text: #1d192e;
+  --color-text-secondary: #697788;
+  --color-border: #dce2e8;
+
+  /* Скругления */
+  --radius: 5px;
+}
