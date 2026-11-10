@@ -1,23 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import LoginPage from "./pages/LoginPage";
+import SchedulePage from "./pages/SchedulePage";
 
 function App() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    fetch("/api/test")
-      .then((res) => res.json())
-      .then((data) => {
-        setMessage(data.message);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
-    <div>
-      <h1>{message}</h1>
-    </div>
+    <>
+      {isAuthenticated ? <SchedulePage /> : <LoginPage />}
+    </>
   );
 }
 
