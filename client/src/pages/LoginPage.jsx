@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./LoginPage.css";
+import Button from "../component/ui/Button";
 
 function LoginPage() {
   const [login, setLogin] = useState("");
@@ -33,6 +34,7 @@ function LoginPage() {
             onChange={(event) => setPassword(event.target.value)}
             required
           />
+          <Button>Тырк</Button>
         </form>
       </div>
     </main>
