@@ -5,6 +5,16 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Teacher extends Model {
     static associate(models) {
+      Teacher.belongsTo(models.User, {
+        foreignKey: 'user_id',
+        as: 'user',
+      });
+
+      Teacher.hasMany(models.Discipline, {
+        foreignKey: 'teacher_id',
+        as: 'disciplines',
+      });
+
       Teacher.hasMany(models.Lesson, {
         foreignKey: 'teacher_id',
         as: 'lessons',
@@ -20,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false,
       },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: true,
+      },
       full_name: {
         type: DataTypes.STRING(150),
         allowNull: false,
@@ -28,7 +43,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      created_at: {
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      updatedAt: {
         type: DataTypes.DATE,
         allowNull: false,
       },
@@ -38,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Teacher',
       tableName: 'Teachers',
       timestamps: false,
-    }
+    },
   );
 
   return Teacher;
