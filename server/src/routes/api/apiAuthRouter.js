@@ -19,9 +19,14 @@ router.post('/login', async (req, res) => {
     }
 
     const user = await User.findOne({ where: { login } });
+
+    if (!user) {
+      return res.status(403).json({ message: 'Неверный логин или пароль' });
+    }
+
     const correctPass = await bcrypt.compare(password, user.password_hash);
 
-    if (!user || !correctPass) {
+    if (!correctPass) {
       return res.status(403).json({ message: 'Неверный логин или пароль' });
     }
 

@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SchedulePage from "./pages/SchedulePage";
+import UsersPage from "./pages/UsersPage";
+
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
-    <>
-      {isAuthenticated ? <SchedulePage /> : <LoginPage />}
-    </>
+    <Routes>
+      <Route path="/login" element={<LoginPage/>}/>
+      <Route path="/schedule" element={<SchedulePage/>}/>
+      <Route path="/users" element={<UsersPage/>}/>
+      <Route path="*" element={<Navigate to='/login' replace/>}/>
+    </Routes>
   );
 }
 
