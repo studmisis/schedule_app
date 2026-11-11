@@ -3,11 +3,15 @@ import "./LoginPage.css";
 import Button from "../component/ui/Button";
 import Box from "../component/ui/Box";
 import { sheduleIcon, personIcon, eyeIcon } from "../icons";
+import { useNavigate } from "react-router-dom";
+import useApi from "../hooks/useApi";
 
 function LoginPage() {
 	const [login, setLogin] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
+	const { execute, loading, error } = useApi();
+	const navigate = useNavigate();
 
 	function handleLoginChange(event) {
 		setLogin(event.target.value);
@@ -21,11 +25,24 @@ function LoginPage() {
 		setShowPassword(!showPassword);
 	}
 
+	async function handleSubmit(e) {
+		e.preventDefault();
 
+		const result = await execute({
+			method: "POST",
+			url: "/auth/login",
+			data: {
+				login,
+				password,
+			},
+		});
 
-	function handleSubmit() {}
+		if (result) {
+			navigate("/schedule");
+		}
+	}
 
-  const disabledButton = !login.trim() || !password.trim()
+	const disabledButton = !login.trim() || !password.trim() || loading;
 
 	return (
 		<main className="login-page">
@@ -40,7 +57,7 @@ function LoginPage() {
 						value={login}
 						onChange={handleLoginChange}
 						required
-            className="login-input"
+						className="login-input"
 					/>
 
 					<label htmlFor="password">Пароль</label>
@@ -51,19 +68,20 @@ function LoginPage() {
 							value={password}
 							onChange={handlePasswordChange}
 							required
-              className="login-input"
+							className="login-input"
 						/>
 
-						<Button
-							className="password-toggle"
-							onClick={handleTogglePassword}
-						>
+						<Button className="password-toggle" onClick={handleTogglePassword}>
 							<img src={eyeIcon} alt="" />
 						</Button>
 					</div>
-					<Button type="sumbit" className="login-button" disabled={disabledButton}>
+					<Button
+						className="login-button"
+						disabled={disabledButton}
+						type="submit"
+					>
 						<img src={personIcon} alt="person" />
-						Войти
+						{loading ? "Входим..." : "Войти"}
 					</Button>
 				</form>
 			</Box>
