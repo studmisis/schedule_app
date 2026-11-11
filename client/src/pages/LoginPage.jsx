@@ -1,44 +1,74 @@
 import { useState } from "react";
 import "./LoginPage.css";
 import Button from "../component/ui/Button";
+import Box from "../component/ui/Box";
+import { sheduleIcon, personIcon, eyeIcon } from "../icons";
 
 function LoginPage() {
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+	const [login, setLogin] = useState("");
+	const [password, setPassword] = useState("");
+	const [showPassword, setShowPassword] = useState(false);
 
-  function handleSubmit(){
+	function handleLoginChange(event) {
+		setLogin(event.target.value);
+	}
 
-  }
+	function handlePasswordChange(event) {
+		setPassword(event.target.value);
+	}
+
+	function handleTogglePassword() {
+		setShowPassword(!showPassword);
+	}
 
 
-  return (
-    <main className="login-page">
-      <div className="login-card">
-        <h1>Вход в систему</h1>
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="login">Логин</label>
-          <input
-            id="login"
-            type="text"
-            value={login}
-            onChange={(event) => setLogin(event.target.value)}
-            required
-          />
+	function handleSubmit() {}
 
-          <label htmlFor="password">Пароль</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
-          <Button>Тырк</Button>
-        </form>
-      </div>
-    </main>
-  );
+  const disabledButton = !login.trim() || !password.trim()
+
+	return (
+		<main className="login-page">
+			<Box className="login-card">
+				<img src={sheduleIcon} alt="schedule" />
+				<h1>Вход в систему</h1>
+				<form className="login-form" onSubmit={handleSubmit}>
+					<label htmlFor="login">Логин</label>
+					<input
+						id="login"
+						type="text"
+						value={login}
+						onChange={handleLoginChange}
+						required
+            className="login-input"
+					/>
+
+					<label htmlFor="password">Пароль</label>
+					<div className="password-field">
+						<input
+							id="password"
+							type={showPassword ? "text" : "password"}
+							value={password}
+							onChange={handlePasswordChange}
+							required
+              className="login-input"
+						/>
+
+						<Button
+							className="password-toggle"
+							onClick={handleTogglePassword}
+						>
+							<img src={eyeIcon} alt="" />
+						</Button>
+					</div>
+					<Button type="sumbit" className="login-button" disabled={disabledButton}>
+						<img src={personIcon} alt="person" />
+						Войти
+					</Button>
+				</form>
+			</Box>
+		</main>
+	);
 }
 
 export default LoginPage;
