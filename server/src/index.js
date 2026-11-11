@@ -1,8 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const { Discipline, User } = require('../db/models');
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import db from '../db/models/index.js';
+import apiAuthRouter from './routes/api/apiAuthRouter.js'
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -13,34 +14,10 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/api/test', (req, res) => {
-  res.json({
-    message: 'Ответ сервера',
-  });
-});
+const { Discipline, User } = db
 
-// Получить все предметы
-app.get('/api/disciplines', async (req, res) => {
-  try {
-    const disciplines = await Discipline.findAll();
-    res.json(disciplines);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Ошибка сервера' });
-  }
-});
 
-app.get('/api/users', async (req, res) => {
-  try {
-    const users = await User.findAll({
-      attributes: { exclude: ['password_hash'] },
-    });
-    res.json(users);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Ошибка сервера' });
-  }
-});
+app.use('/api/auth', apiAuthRouter)
 
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порте ${PORT}`);
