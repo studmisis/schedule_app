@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./LoginPage.css";
 import Button from "../component/ui/Button";
 import Box from "../component/ui/Box";
 import { sheduleIcon, personIcon, eyeIcon, eyeCloseIcon } from "../icons";
 import { useNavigate } from "react-router-dom";
 import useApi from "../hooks/useApi";
+import UserContext from "../context/UserContext";
 
 function LoginPage() {
 	const [login, setLogin] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
 	const { execute, loading, error } = useApi();
+	const { setUser } = useContext(UserContext);
 	const navigate = useNavigate();
 
 	function handleLoginChange(event) {
@@ -37,8 +39,14 @@ function LoginPage() {
 			},
 		});
 
-		if (result) {
-			navigate("/schedule");
+		if (result !== null) {
+			setUser(result.user);
+
+			if (result.user.role === "admin") {
+				navigate("/admin");
+			} else {
+				navigate("/schedule");
+			}
 		}
 	}
 

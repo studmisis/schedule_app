@@ -42,7 +42,8 @@ router.post('/login', async (req, res) => {
     return res
       .cookie('accessToken', accessToken, cookiesConfig.access)
       .cookie('refreshToken', refreshToken, cookiesConfig.refresh)
-      .sendStatus(200);
+      .status(200)
+      .json({ user: plainUser })
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -55,13 +56,10 @@ router.get('/logout', (req, res) => {
   res.clearCookie('accessToken').clearCookie('refreshToken').sendStatus(200);
 });
 
-router.get('/check', verifyAccessToken, (req, res) => {
-  console.log(res.locals.user);
-  res.json({ message: 'Доступ разрешён' });
-});
-
-router.get('/admin-check', verifyAccessToken, checkRole('admin'), (req, res) => {
-  res.json({ message: 'Ты администратор!' });
+router.get('/me', verifyAccessToken, (req, res) => {
+  return res.status(200).json({
+    user: res.locals.user,
+  });
 });
 
 export default router;
