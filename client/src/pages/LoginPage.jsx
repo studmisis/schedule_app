@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./LoginPage.css";
 import Button from "../component/ui/Button";
 import Box from "../component/ui/Box";
-import { sheduleIcon, personIcon, eyeIcon } from "../icons";
+import { sheduleIcon, personIcon, eyeIcon, eyeCloseIcon } from "../icons";
 import { useNavigate } from "react-router-dom";
 import useApi from "../hooks/useApi";
 
@@ -72,7 +72,7 @@ function LoginPage() {
 						/>
 
 						<Button className="password-toggle" onClick={handleTogglePassword}>
-							<img src={eyeIcon} alt="" />
+							<img src={showPassword ? eyeCloseIcon : eyeIcon} alt="" />
 						</Button>
 					</div>
 					<Button
